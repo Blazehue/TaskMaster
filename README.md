@@ -1,19 +1,21 @@
-# 📝 TaskMaster V1
-
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)  
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)  
-[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)  
-[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)  
-[![Drizzle](https://img.shields.io/badge/Drizzle-FFBE2E?style=for-the-badge&logo=drizzle&logoColor=black)](https://orm.drizzle.team/)  
-[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)  
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
+# 📝 TaskMaster
+A lightweight, fast **task management web app** built with **React + TypeScript** and **Vite**, styled with **Tailwind CSS**. Includes **Drizzle ORM** scaffolding for typed, migration-first database workflows and deployable on **Vercel**.
 
 ---
 
-A lightweight, fast **task management web app** built with **React + TypeScript** and **Vite**, styled with **Tailwind CSS**.  
-Includes **Drizzle ORM** scaffolding for typed, migration-first database workflows and deployable on **Vercel**.
+<p align="center">
+  <a href="https://reactjs.org/"><img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" /></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" /></a>
+  <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" /></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" /></a>
+  <a href="https://orm.drizzle.team/"><img src="https://img.shields.io/badge/Drizzle-FFBE2E?style=for-the-badge&logo=drizzle&logoColor=black" alt="Drizzle" /></a>
+  <a href="https://vercel.com/"><img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License: MIT" /></a>
+</p>
 
-🔗 **Live Demo:** [task-master-v1-seven.vercel.app](https://task-master-v1-seven.vercel.app)
+---
+
+🔗 **Live Demo:** [TaskMaster](https://task-master-v1-seven.vercel.app)
 
 ---
 
@@ -62,9 +64,6 @@ TaskMasterV1/
 
 ```
 
-
-
-
 ## ⚙️ Prerequisites
 
 - **Node.js** ≥ 18  
@@ -85,27 +84,36 @@ npm install
 # pnpm install
 # yarn install
 # bun install
+``` 
 2. Run Development Server
-bash
+``` bash
 Copy code
 npm run dev
+````
+
 3. Build & Preview
-bash
+```bash
 Copy code
 npm run build
 npm run preview
-🔐 Environment Variables
+```
+---
+
+### 🔐 Environment Variables
 Copy .env.example → .env.local
 
-bash
+```bash
 Copy code
 cp env.example .env.local
 Fill in values (e.g., DATABASE_URL, etc.).
+```
 
-🗄️ Database (Drizzle ORM)
+---
+
+### 🗄️ Database (Drizzle ORM)
 If using Drizzle:
 
-bash
+```bash
 Copy code
 # Generate migrations
 npx drizzle-kit generate
@@ -115,30 +123,19 @@ npx drizzle-kit push
 
 # Open studio
 npx drizzle-kit studio
-🧪 Linting & Formatting
-bash
+```
+
+---
+
+### 🧪 Linting & Formatting
+
+```bash
 Copy code
 npm run lint
 npm run format
-📦 Deployment (Vercel)
-Push to GitHub
+```
+---
 
-Import repo into Vercel
+### 📝 License
 
-Configure env variables in Vercel
-
-Deploy 🎉
-
-Live link: task-master-v1-seven.vercel.app
-
-🙌 Contributing
-Fork this repo
-
-Create a branch → git checkout -b feat/awesome-feature
-
-Commit → git commit -m "feat: add awesome feature"
-
-Push → git push origin feat/awesome-feature
-
-Open a PR 🚀
-
+This project is licensed under the [MIT License](!LICENSE).
