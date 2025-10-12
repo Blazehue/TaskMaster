@@ -87,13 +87,13 @@ npm install
 ``` 
 2. Run Development Server
 ``` bash
-Copy code
+# Copy code
 npm run dev
 ````
 
 3. Build & Preview
 ```bash
-Copy code
+# Copy code
 npm run build
 npm run preview
 ```
@@ -103,7 +103,7 @@ npm run preview
 Copy .env.example → .env.local
 
 ```bash
-Copy code
+# Copy code
 cp env.example .env.local
 Fill in values (e.g., DATABASE_URL, etc.).
 ```
@@ -114,7 +114,7 @@ Fill in values (e.g., DATABASE_URL, etc.).
 If using Drizzle:
 
 ```bash
-Copy code
+# Copy code
 # Generate migrations
 npx drizzle-kit generate
 
@@ -130,7 +130,7 @@ npx drizzle-kit studio
 ### 🧪 Linting & Formatting
 
 ```bash
-Copy code
+# Copy code
 npm run lint
 npm run format
 ```
