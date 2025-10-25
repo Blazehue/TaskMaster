@@ -13,11 +13,8 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
-
-# production
+# production - Vite build output
+/dist
 /build
 
 # misc
@@ -31,11 +28,39 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
+.env*.local
+.env.production
 
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+
+# editor
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Lock files (keep only one)
+# Uncomment if using npm (keep package-lock.json)
+# yarn.lock
+# pnpm-lock.yaml
+# Uncomment if using yarn/pnpm (remove package-lock.json)
+bun.lock
+
+# Backup files
+*.bak
+*.backup
+*~
