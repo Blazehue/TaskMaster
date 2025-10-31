@@ -381,4 +381,14 @@
   .animate-shimmer {
     animation: shimmer 2s infinite;
   }
+
+  /* Drag and drop cursor states */
+  .cursor-grab {
+    cursor: grab;
+  }
+
+  .cursor-grabbing,
+  .cursor-grabbing * {
+    cursor: grabbing !important;
+  }
 }
