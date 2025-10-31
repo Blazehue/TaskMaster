@@ -1,6 +1,7 @@
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { Toaster } from 'sonner'
+import { AnimatePresence, motion } from 'motion/react'
 import Navigation from './components/Navigation'
 import TaskManagementApp from './components/TaskManagementApp'
 import Dashboard from './components/Dashboard'
@@ -11,6 +12,108 @@ import ErrorReporter from './components/ErrorReporter'
 import CommandPalette from './components/CommandPalette'
 import VisualEditsMessenger from './visual-edits/VisualEditsMessenger'
 import { toast } from './lib/toast'
+
+function AnimatedRoutes() {
+  const location = useLocation()
+
+  const pageVariants = {
+    initial: {
+      opacity: 0,
+      x: -20,
+    },
+    animate: {
+      opacity: 1,
+      x: 0,
+    },
+    exit: {
+      opacity: 0,
+      x: 20,
+    },
+  }
+
+  const pageTransition = {
+    type: "tween" as const,
+    ease: "anticipate" as const,
+    duration: 0.3,
+  }
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route
+          path="/"
+          element={
+            <motion.div
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={pageVariants}
+              transition={pageTransition}
+            >
+              <TaskManagementApp />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <motion.div
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={pageVariants}
+              transition={pageTransition}
+            >
+              <Dashboard />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/calendar"
+          element={
+            <motion.div
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={pageVariants}
+              transition={pageTransition}
+            >
+              <Calendar />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/kanban"
+          element={
+            <motion.div
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={pageVariants}
+              transition={pageTransition}
+            >
+              <KanbanBoard />
+            </motion.div>
+          }
+        />
+        <Route
+          path="/projects"
+          element={
+            <motion.div
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={pageVariants}
+              transition={pageTransition}
+            >
+              <ProjectGrid />
+            </motion.div>
+          }
+        />
+      </Routes>
+    </AnimatePresence>
+  )
+}
 
 function App() {
   const handleCreateTask = () => {
@@ -47,13 +150,7 @@ function App() {
           onCreateProject={handleCreateProject}
         />
         <Navigation />
-        <Routes>
-          <Route path="/" element={<TaskManagementApp />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/kanban" element={<KanbanBoard />} />
-          <Route path="/projects" element={<ProjectGrid />} />
-        </Routes>
+        <AnimatedRoutes />
         <VisualEditsMessenger />
       </div>
     </Router>
