@@ -1,4 +1,5 @@
 import { toast as sonnerToast } from 'sonner';
+import { triggerConfetti } from './confetti';
 
 // Custom toast wrapper with brutalist styling
 export const toast = {
@@ -24,6 +25,7 @@ export const toast = {
   },
   
   taskCompleted: (xp: number) => {
+    triggerConfetti();
     sonnerToast.success(`Task completed! 🎉 +${xp} XP`, {
       duration: 4000,
       className: 'brutalist-toast',
@@ -66,6 +68,8 @@ export const toast = {
   },
   
   levelUp: (level: number) => {
+    triggerConfetti();
+    setTimeout(() => triggerConfetti(), 300); // Double confetti for level up!
     sonnerToast.success(`🎊 Level Up! You're now Level ${level}!`, {
       duration: 5000,
       className: 'brutalist-toast level-up-toast',
