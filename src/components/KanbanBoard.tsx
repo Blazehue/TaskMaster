@@ -112,15 +112,19 @@ function TaskCard({ task, isOverlay, onTaskClick }: { task: KanbanTask; isOverla
       <div
         ref={setNodeRef}
         style={style}
-        className="opacity-30 bg-card p-2.5 h-[100px] min-h-[100px] items-center flex text-left border-2 border-primary cursor-grab relative"
+        className="opacity-0 bg-card p-2.5 h-[100px] min-h-[100px] items-center flex text-left border-2 border-dashed border-gray-400 cursor-grabbing relative"
       />
     )
   }
 
   if (isOverlay) {
     return (
-      <div className="bg-card p-2.5 h-[100px] min-h-[100px] items-center flex text-left border-2 border-primary cursor-grab relative">
-        <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
+      <div className="p-3 h-[100px] min-h-[100px] items-center flex text-left cursor-grabbing relative border-2 border-black bg-white text-black shadow-[8px_8px_0px_0px_rgba(251,232,87,1)] transform rotate-2 scale-110 animate-pulse">
+        <div className="w-3 h-3 bg-[#fbe857] absolute top-2 left-2 animate-pulse" />
+        <Grip 
+          className="w-5 h-5 absolute top-2 right-2 opacity-100" 
+        />
+        <p className="my-auto h-[90%] w-full pr-10 overflow-y-auto overflow-x-hidden whitespace-pre-wrap font-mono text-sm font-medium leading-tight">
           {task.title}
         </p>
       </div>
@@ -139,13 +143,14 @@ function TaskCard({ task, isOverlay, onTaskClick }: { task: KanbanTask; isOverla
         }
       }}
       className={`
-        p-3 h-[100px] min-h-[100px] items-center flex text-left cursor-grab relative
+        p-3 h-[100px] min-h-[100px] items-center flex text-left relative
         border-2 border-black bg-white text-black
         hover:bg-black hover:text-white hover:border-white
         transition-all duration-200 ease-in-out
         hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:transform hover:translate-x-[-2px] hover:translate-y-[-2px]
         focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2
         active:transform active:translate-x-0 active:translate-y-0 active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]
+        cursor-grab active:cursor-grabbing
         group
       `}
 
@@ -182,7 +187,7 @@ function TaskCard({ task, isOverlay, onTaskClick }: { task: KanbanTask; isOverla
   )
 }
 
-function ColumnContainer({ column, tasks, onTaskClick }: { column: Column; tasks: KanbanTask[]; onTaskClick?: (task: Task) => void }) {
+function ColumnContainer({ column, tasks, onTaskClick, isOverColumn }: { column: Column; tasks: KanbanTask[]; onTaskClick?: (task: Task) => void; isOverColumn?: boolean }) {
   const [editMode, setEditMode] = useState(false)
 
   const {
@@ -222,7 +227,11 @@ function ColumnContainer({ column, tasks, onTaskClick }: { column: Column; tasks
     <div
       ref={setNodeRef}
       style={style}
-      className="bg-white w-[350px] h-[600px] max-h-[600px] flex flex-col border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]"
+      className={`bg-white w-[350px] h-[600px] max-h-[600px] flex flex-col border-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] transition-all duration-200 ${
+        isOverColumn 
+          ? 'border-[#fbe857] border-4 shadow-[0_0_20px_rgba(251,232,87,0.5)] scale-[1.02]' 
+          : 'border-black'
+      }`}
     >
       {/* Column title */}
       <div
@@ -266,7 +275,11 @@ function ColumnContainer({ column, tasks, onTaskClick }: { column: Column; tasks
         </SortableContext>
         
         {tasks.length === 0 && (
-          <div className="flex-1 flex items-center justify-center text-gray-500 font-mono text-sm uppercase tracking-wide border-2 border-dashed border-gray-400 py-8">
+          <div className={`flex-1 flex items-center justify-center font-mono text-sm uppercase tracking-wide border-2 border-dashed py-8 transition-all duration-200 ${
+            isOverColumn 
+              ? 'border-[#fbe857] bg-[#fbe857]/10 text-black' 
+              : 'border-gray-400 text-gray-500'
+          }`}>
             DROP TASKS HERE
           </div>
         )}
@@ -293,6 +306,7 @@ export default function KanbanBoard({ className = "", tasks = [], onTaskClick, o
   
   const [activeColumn, setActiveColumn] = useState<Column | null>(null)
   const [activeTask, setActiveTask] = useState<KanbanTask | null>(null)
+  const [overColumnId, setOverColumnId] = useState<Id | null>(null)
 
   // Update kanban tasks when props tasks change
   React.useEffect(() => {
@@ -350,6 +364,7 @@ export default function KanbanBoard({ className = "", tasks = [], onTaskClick, o
                 column={col}
                 tasks={kanbanTasks.filter((task) => task.columnId === col.id)}
                 onTaskClick={onTaskClick}
+                isOverColumn={overColumnId === col.id}
               />
             ))}
           </SortableContext>
@@ -404,6 +419,7 @@ export default function KanbanBoard({ className = "", tasks = [], onTaskClick, o
   function onDragEnd(event: DragEndEvent) {
     setActiveColumn(null)
     setActiveTask(null)
+    setOverColumnId(null)
 
     const { active, over } = event
     if (!over) return
@@ -427,15 +443,31 @@ export default function KanbanBoard({ className = "", tasks = [], onTaskClick, o
 
   function onDragOver(event: DragOverEvent) {
     const { active, over } = event
-    if (!over) return
+    if (!over) {
+      setOverColumnId(null)
+      return
+    }
 
     const activeId = active.id
     const overId = over.id
 
+    // Update over column for visual feedback
+    const isOverAColumn = over.data.current?.type === "Column"
+    const isOverATask = over.data.current?.type === "Task"
+    
+    if (isOverAColumn) {
+      setOverColumnId(overId)
+    } else if (isOverATask) {
+      // Find the column of the task we're over
+      const overTask = kanbanTasks.find(t => t.id === overId)
+      if (overTask) {
+        setOverColumnId(overTask.columnId)
+      }
+    }
+
     if (activeId === overId) return
 
     const isActiveATask = active.data.current?.type === "Task"
-    const isOverATask = over.data.current?.type === "Task"
 
     if (!isActiveATask) return
 
@@ -461,8 +493,6 @@ export default function KanbanBoard({ className = "", tasks = [], onTaskClick, o
         return arrayMove(tasks, activeIndex, overIndex)
       })
     }
-
-    const isOverAColumn = over.data.current?.type === "Column"
 
     // Dropping a Task over a column
     if (isActiveATask && isOverAColumn) {
