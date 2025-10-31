@@ -241,4 +241,85 @@
     background-color: var(--free-tag-background);
     color: var(--free-tag-text);
   }
+
+  /* Toast Notifications - Brutalist Style */
+  [data-sonner-toast] {
+    background: var(--color-background) !important;
+    border: 2px solid var(--color-primary) !important;
+    border-radius: 0 !important;
+    box-shadow: 4px 4px 0px rgba(251, 232, 87, 0.3) !important;
+  }
+
+  [data-sonner-toast][data-type="success"] {
+    border-color: #90ee90 !important;
+    box-shadow: 4px 4px 0px rgba(144, 238, 144, 0.3) !important;
+  }
+
+  [data-sonner-toast][data-type="error"] {
+    border-color: var(--color-destructive) !important;
+    box-shadow: 4px 4px 0px rgba(239, 68, 68, 0.3) !important;
+  }
+
+  [data-sonner-toast][data-type="info"] {
+    border-color: #87ceeb !important;
+    box-shadow: 4px 4px 0px rgba(135, 206, 235, 0.3) !important;
+  }
+
+  .level-up-toast {
+    border: 3px solid var(--color-primary) !important;
+    box-shadow: 6px 6px 0px rgba(251, 232, 87, 0.5) !important;
+    animation: shake 0.5s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+  }
+
+  /* Command Palette - Brutalist Style */
+  [cmdk-root] {
+    background: var(--color-background);
+    border: 3px solid var(--color-primary);
+    border-radius: 0;
+    box-shadow: 8px 8px 0px rgba(251, 232, 87, 0.3);
+  }
+
+  [cmdk-input] {
+    background: var(--color-background);
+    border: 2px solid var(--color-border);
+    border-radius: 0;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-weight: 600;
+  }
+
+  [cmdk-input]:focus {
+    border-color: var(--color-primary);
+    outline: none;
+  }
+
+  [cmdk-item] {
+    border-radius: 0;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  [cmdk-item][data-selected="true"] {
+    background: var(--color-primary);
+    color: var(--color-background);
+  }
+
+  [cmdk-group-heading] {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+  }
+
+  [cmdk-separator] {
+    background: var(--color-border);
+    height: 2px;
+  }
 }
