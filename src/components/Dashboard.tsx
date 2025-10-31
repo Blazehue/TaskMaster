@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils"
 import { Task, UserStats } from "@/types"
 import NumberFlow from "@number-flow/react"
+import { motion } from "motion/react"
 
 interface DashboardProps {
   className?: string
@@ -61,7 +62,7 @@ export default function Dashboard({
     <div className={cn("space-y-6 p-6", className)}>
       {/* Quick Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-card border border-border p-6 transition-colors hover:bg-accent group">
+        <div className="bg-card border-2 border-border p-6 hover-lift cursor-pointer group">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Total Tasks</p>
@@ -73,7 +74,7 @@ export default function Dashboard({
           </div>
         </div>
 
-        <div className="bg-card border border-border p-6 transition-colors hover:bg-accent group">
+        <div className="bg-card border-2 border-border p-6 hover-lift cursor-pointer group">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Completed</p>
@@ -85,7 +86,7 @@ export default function Dashboard({
           </div>
         </div>
 
-        <div className="bg-card border border-border p-6 transition-colors hover:bg-accent group">
+        <div className="bg-card border-2 border-border p-6 hover-lift cursor-pointer group">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Current Streak</p>
@@ -97,7 +98,7 @@ export default function Dashboard({
           </div>
         </div>
 
-        <div className="bg-card border border-border p-6 transition-colors hover:bg-accent group">
+        <div className="bg-card border-2 border-border p-6 hover-lift cursor-pointer group">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Total XP</p>
@@ -116,19 +117,29 @@ export default function Dashboard({
         <div className="lg:col-span-2 bg-card border border-border p-6">
           <h3 className="text-lg font-bold mb-6">Weekly Progress</h3>
           <div className="space-y-4">
-            {weeklyData.map((day) => (
-              <div key={day.day} className="flex items-center gap-4">
+            {weeklyData.map((day, index) => (
+              <motion.div
+                key={day.day}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.4 }}
+                className="flex items-center gap-4"
+              >
                 <div className="w-8 text-sm font-medium">{day.day}</div>
-                <div className="flex-1 bg-muted h-6 border border-border">
-                  <div 
-                    className="bg-primary h-full transition-all duration-300"
-                    style={{ width: `${(day.completed / day.total) * 100}%` }}
-                  />
+                <div className="flex-1 bg-muted h-6 border-2 border-border relative overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(day.completed / day.total) * 100}%` }}
+                    transition={{ delay: index * 0.1 + 0.2, duration: 0.6, ease: "easeOut" }}
+                    className="bg-primary h-full relative"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
+                  </motion.div>
                 </div>
                 <div className="text-sm text-muted-foreground w-16">
                   {day.completed}/{day.total}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -151,8 +162,13 @@ export default function Dashboard({
                   <NumberFlow value={userStats.maxXp} />
                 </span>
               </div>
-              <div className="bg-muted h-2 border border-border">
-                <div className="bg-primary h-full" style={{ width: `${(userStats.xp / userStats.maxXp) * 100}%` }} />
+              <div className="bg-muted h-2 border-2 border-border relative overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${(userStats.xp / userStats.maxXp) * 100}%` }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                  className="bg-primary h-full"
+                />
               </div>
               <p className="text-xs text-muted-foreground">
                 <NumberFlow value={userStats.maxXp - userStats.xp} /> XP to next level
