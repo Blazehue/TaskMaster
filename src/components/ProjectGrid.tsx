@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react"
-import { Plus, Calendar, Filter, ChevronDown, Loader2 } from "lucide-react"
+import { Plus, Calendar, Filter, ChevronDown, FolderOpen } from "lucide-react"
 import ProjectForm from "./ProjectForm"
 import { Project } from "@/types"
+import { ProjectCardSkeleton } from "./LoadingSkeleton"
+import EmptyState from "./EmptyState"
 
 interface ProjectGridProps {
   onProjectClick?: (project: Project) => void
@@ -73,10 +75,16 @@ export default function ProjectGrid({
 
   if (loading) {
     return (
-      <div className={`flex items-center justify-center p-12 ${className}`}>
-        <div className="flex items-center gap-3">
-          <Loader2 className="w-6 h-6 animate-spin" />
-          <span className="text-muted-foreground">Loading projects...</span>
+      <div className={`p-6 ${className}`}>
+        <div className="mb-6 flex items-center justify-between">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold">PROJECTS</h1>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <ProjectCardSkeleton key={i} />
+          ))}
         </div>
       </div>
     )
@@ -146,6 +154,19 @@ export default function ProjectGrid({
             ADD PROJECT
           </span>
         </div>
+
+        {/* Empty State */}
+        {filteredAndSortedProjects.length === 0 && projects.length === 0 && (
+          <div className="col-span-full">
+            <EmptyState
+              icon={FolderOpen}
+              title="No Projects Yet"
+              description="Start by creating your first project to organize your tasks and track your progress."
+              actionLabel="Create Your First Project"
+              onAction={() => setIsFormOpen(true)}
+            />
+          </div>
+        )}
 
         {/* Project Cards */}
         {filteredAndSortedProjects.map((project) => {

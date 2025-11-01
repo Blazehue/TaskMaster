@@ -1,4 +1,5 @@
 import { Project, Task } from "@/types"
+import { toast } from "@/lib/toast"
 
 // Mock data for projects
 const mockProjects: Project[] = [
@@ -112,6 +113,7 @@ export const projectsAPI = {
     }
     projects.push(newProject)
     setToStorage(PROJECTS_KEY, projects)
+    toast.projectCreated()
     return newProject
   },
 
@@ -133,6 +135,7 @@ export const projectsAPI = {
   async delete(id: number): Promise<void> {
     projects = projects.filter(p => p.id !== id)
     setToStorage(PROJECTS_KEY, projects)
+    toast.projectDeleted()
   }
 }
 
@@ -168,6 +171,7 @@ export const tasksAPI = {
     }
     tasks.push(newTask)
     setToStorage(TASKS_KEY, tasks)
+    toast.taskCreated()
     return newTask
   },
 
@@ -188,10 +192,17 @@ export const tasksAPI = {
   async delete(id: string): Promise<void> {
     tasks = tasks.filter(t => t.id !== id)
     setToStorage(TASKS_KEY, tasks)
+    toast.taskDeleted()
   },
 
   async updateStatus(id: string, status: Task['status']): Promise<Task> {
-    return this.update(id, { status })
+    const task = await this.update(id, { status })
+    if (status === 'complete') {
+      toast.taskCompleted(task.xpReward)
+    } else {
+      toast.taskMoved(status)
+    }
+    return task
   }
 }
 

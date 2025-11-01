@@ -1,4 +1,4 @@
-import { User, Settings, Trophy, Flame } from "lucide-react"
+import { User, Settings, Trophy, Flame, Keyboard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -25,6 +25,7 @@ interface HeaderProps {
   onThemeToggle?: () => void
   onSettingsClick?: () => void
   onProfileClick?: () => void
+  onShortcutsClick?: () => void
   isDarkMode?: boolean
 }
 
@@ -34,7 +35,8 @@ export default function Header({
   user = { name: "User", initials: "U" },
   onThemeToggle,
   onSettingsClick,
-  onProfileClick
+  onProfileClick,
+  onShortcutsClick
 }: HeaderProps) {
   const xpPercentage = (userStats.xp / userStats.maxXp) * 100
 
@@ -84,6 +86,18 @@ export default function Header({
 
         {/* Right Section */}
         <div className="flex items-center gap-3">
+          {/* Keyboard Shortcuts Button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onShortcutsClick}
+            className="h-10 px-3 hover:bg-muted transition-colors font-mono text-xs uppercase tracking-wider"
+            title="Keyboard Shortcuts (Press ?)"
+          >
+            <Keyboard className="h-4 w-4 mr-2" />
+            ?
+          </Button>
+
           {/* User Avatar & Settings Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
