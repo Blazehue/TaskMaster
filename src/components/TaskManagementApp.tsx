@@ -10,6 +10,8 @@ import BadgeGallery from "@/components/BadgeGallery";
 import TaskModal from "@/components/TaskModal";
 import TasksView from "@/components/TasksView";
 import KeyboardShortcutsModal from "@/components/KeyboardShortcutsModal";
+import MobileNav from "@/components/MobileNav";
+import QuickActionFAB from "@/components/QuickActionFAB";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { Task } from "@/types";
 
@@ -190,6 +192,7 @@ export default function TaskManagementApp() {
         onViewChange={setActiveView}
         user={user}
         userStats={userStats}
+        className="hidden md:flex"
       />
       <div className="flex-1 flex flex-col">
         <Header 
@@ -197,9 +200,16 @@ export default function TaskManagementApp() {
           onThemeToggle={handleThemeToggle}
           onShortcutsClick={() => setIsShortcutsModalOpen(true)}
         />
-        <main className="flex-1 bg-background">
+        <main className="flex-1 bg-background pb-16 md:pb-0">
           {renderMainContent()}
         </main>
+        <MobileNav 
+          activeView={activeView}
+          onViewChange={setActiveView}
+        />
+        <QuickActionFAB 
+          onNewTask={handleAddTask}
+        />
       </div>
       <TaskModal
         isOpen={isTaskModalOpen}
