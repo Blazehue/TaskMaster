@@ -1,10 +1,5 @@
+import { motion, AnimatePresence } from 'motion/react'
 import { X, Keyboard } from 'lucide-react'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
 
 interface KeyboardShortcut {
   category: string
@@ -59,24 +54,46 @@ function KeyBadge({ keyName }: { keyName: string }) {
 
 export default function KeyboardShortcutsModal({ isOpen, onClose }: KeyboardShortcutsModalProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl bg-white border-4 border-black p-0 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-        {/* Header */}
-        <DialogHeader className="bg-black text-white p-6 relative">
-          <div className="flex items-center gap-3">
-            <Keyboard className="w-6 h-6" />
-            <DialogTitle className="text-2xl font-black font-mono uppercase tracking-wider">
-              KEYBOARD SHORTCUTS
-            </DialogTitle>
-          </div>
-          <button
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={onClose}
-            className="absolute right-6 top-6 p-2 hover:bg-white hover:text-black border-2 border-white transition-all"
-            aria-label="Close"
+          />
+
+          {/* Modal */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ 
+              duration: 0.2,
+              ease: [0.16, 1, 0.3, 1]
+            }}
+            className="relative max-w-3xl w-full bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           >
-            <X className="w-5 h-5" />
-          </button>
-        </DialogHeader>
+            {/* Header */}
+            <div className="bg-black text-white p-6 relative">
+              <div className="flex items-center gap-3">
+                <Keyboard className="w-6 h-6" />
+                <h2 className="text-2xl font-black font-mono uppercase tracking-wider">
+                  KEYBOARD SHORTCUTS
+                </h2>
+              </div>
+              <button
+                onClick={onClose}
+                className="absolute right-6 top-6 p-2 hover:bg-white hover:text-black border-2 border-white transition-all"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
         {/* Content */}
         <div className="p-6 space-y-8 max-h-[70vh] overflow-y-auto">
@@ -117,8 +134,10 @@ export default function KeyboardShortcutsModal({ isOpen, onClose }: KeyboardShor
               <KeyBadge keyName="?" /> anywhere to open this help menu
             </p>
           </div>
+            </div>
+          </motion.div>
         </div>
-      </DialogContent>
-    </Dialog>
+      )}
+    </AnimatePresence>
   )
 }
