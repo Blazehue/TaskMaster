@@ -8,9 +8,10 @@ import KanbanBoard from "@/components/KanbanBoard";
 import Calendar from "@/components/Calendar";
 import BadgeGallery from "@/components/BadgeGallery";
 import TaskModal from "@/components/TaskModal";
+import TasksView from "@/components/TasksView";
 import { Task } from "@/types";
 
-type ViewType = "dashboard" | "projects" | "kanban" | "calendar" | "profile";
+type ViewType = "dashboard" | "tasks" | "projects" | "kanban" | "calendar" | "profile";
 
 interface UserStats {
   xp: number;
@@ -149,6 +150,8 @@ export default function TaskManagementApp() {
     switch (activeView) {
       case "dashboard":
         return <Dashboard userStats={userStats} tasks={tasks} onTaskClick={handleTaskClick} />;
+      case "tasks":
+        return <TasksView tasks={tasks} onTaskClick={handleTaskClick} onAddTask={handleAddTask} />;
       case "projects":
         return <ProjectGrid />;
       case "kanban":

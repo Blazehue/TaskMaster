@@ -1,5 +1,6 @@
 import { 
-  LayoutDashboard, 
+  LayoutDashboard,
+  ListTodo,
   FolderOpen, 
   Kanban, 
   Calendar, 
@@ -12,17 +13,21 @@ import { cn } from "@/lib/utils"
 interface SidebarProps {
   className?: string
   activeView: string
-  onViewChange: (view: "dashboard" | "projects" | "kanban" | "calendar" | "profile") => void
+  onViewChange: (view: "dashboard" | "tasks" | "projects" | "kanban" | "calendar" | "profile") => void
   user?: any
   userStats?: any
 }
 
-type ViewType = "dashboard" | "projects" | "kanban" | "calendar" | "profile";
+type ViewType = "dashboard" | "tasks" | "projects" | "kanban" | "calendar" | "profile";
 
 const navigationItems: { name: ViewType; icon: React.ComponentType<{ className?: string }> }[] = [
   {
     name: "dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    name: "tasks",
+    icon: ListTodo,
   },
   {
     name: "projects",
