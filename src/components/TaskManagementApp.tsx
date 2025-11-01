@@ -9,6 +9,8 @@ import Calendar from "@/components/Calendar";
 import BadgeGallery from "@/components/BadgeGallery";
 import TaskModal from "@/components/TaskModal";
 import TasksView from "@/components/TasksView";
+import KeyboardShortcutsModal from "@/components/KeyboardShortcutsModal";
+import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { Task } from "@/types";
 
 type ViewType = "dashboard" | "tasks" | "projects" | "kanban" | "calendar" | "profile";
@@ -30,6 +32,7 @@ export default function TaskManagementApp() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [isShortcutsModalOpen, setIsShortcutsModalOpen] = useState<boolean>(false);
   const [userStats] = useState<UserStats>({
     xp: 750,
     maxXp: 1000,
@@ -146,6 +149,21 @@ export default function TaskManagementApp() {
     );
   };
 
+  // Keyboard shortcuts
+  useKeyboardShortcuts([
+    { key: 'd', ctrl: true, callback: () => setActiveView('dashboard') },
+    { key: 't', ctrl: true, callback: () => setActiveView('tasks') },
+    { key: 'p', ctrl: true, callback: () => setActiveView('projects') },
+    { key: 'k', ctrl: true, callback: () => setActiveView('kanban') },
+    { key: 'c', ctrl: true, callback: () => setActiveView('calendar') },
+    { key: 'n', ctrl: true, callback: handleAddTask },
+    { key: '?', shift: true, callback: () => setIsShortcutsModalOpen(true) },
+    { key: 'Escape', callback: () => {
+      if (isTaskModalOpen) setIsTaskModalOpen(false);
+      if (isShortcutsModalOpen) setIsShortcutsModalOpen(false);
+    }},
+  ]);
+
   const renderMainContent = () => {
     switch (activeView) {
       case "dashboard":
@@ -177,6 +195,7 @@ export default function TaskManagementApp() {
         <Header 
           isDarkMode={isDarkMode}
           onThemeToggle={handleThemeToggle}
+          onShortcutsClick={() => setIsShortcutsModalOpen(true)}
         />
         <main className="flex-1 bg-background">
           {renderMainContent()}
@@ -191,6 +210,10 @@ export default function TaskManagementApp() {
         task={selectedTask}
         onSave={handleTaskSave}
         onDelete={selectedTask?.id ? handleTaskDelete : undefined}
+      />
+      <KeyboardShortcutsModal
+        isOpen={isShortcutsModalOpen}
+        onClose={() => setIsShortcutsModalOpen(false)}
       />
     </div>
   );
